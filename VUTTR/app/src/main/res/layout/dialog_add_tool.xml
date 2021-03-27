@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:minWidth="300dp"
     android:layout_margin="16dp">
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -28,7 +29,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputTextDialogAddName"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Tool name"
@@ -47,7 +48,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputTextDialogAddLink"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Tool link"
@@ -65,7 +66,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputTextDialogAddDescription"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Tool description"
@@ -84,7 +85,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputTextDialogAddTags"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Tags"
