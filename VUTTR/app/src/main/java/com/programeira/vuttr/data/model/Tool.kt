@@ -3,8 +3,8 @@ package com.programeira.vuttr.data.model
 import com.google.gson.annotations.SerializedName
 
 data class Tool (
-    @SerializedName("name")
-    val name: String,
+    @SerializedName("title")
+    val title: String,
     @SerializedName("link")
     val link: String,
     @SerializedName("description")

@@ -15,7 +15,7 @@ class AddToolRequest(private val successCallback: (Int, message: String?, ToolRe
 
     private val service: ApiService by inject()
 
-    fun getTools() {
+    fun addTool() {
         service.addToolRequest(tool)
             .enqueue(object : Callback<ToolResponse> {
                 override fun onResponse(call: Call<ToolResponse>, response: Response<ToolResponse>) {

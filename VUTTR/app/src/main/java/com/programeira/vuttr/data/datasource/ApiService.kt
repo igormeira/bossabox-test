@@ -27,7 +27,7 @@ interface ApiService {
 
     // REMOVE - DELETE - /tools/:id //
     @DELETE("/tools/{id}")
-    fun deleteToolRequest(@Path("id") id: String)
+    fun deleteToolRequest(@Path("id") id: String) : Call<Any>
 
     companion object {
         fun getBaseService(): ApiService {

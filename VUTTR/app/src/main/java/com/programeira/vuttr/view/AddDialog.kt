@@ -37,7 +37,7 @@ class AddDialog(
         val description = inputTextDialogAddDescription.editText?.text.toString()
         val tags = inputTextDialogAddTags.editText?.text.toString().split(" ")
         return Tool(
-            name = name,
+            title = name,
             link = link,
             description = description,
             tags = tags

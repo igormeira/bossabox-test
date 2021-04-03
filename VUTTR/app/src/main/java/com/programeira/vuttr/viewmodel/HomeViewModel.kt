@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.programeira.vuttr.data.datasource.ConnectivityService
 import com.programeira.vuttr.data.model.Tool
 import com.programeira.vuttr.data.model.ToolResponse
+import com.programeira.vuttr.data.repository.AddToolRequest
+import com.programeira.vuttr.data.repository.DeleteToolRequest
 import com.programeira.vuttr.data.repository.ToolsRequest
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -14,15 +16,18 @@ import org.koin.core.inject
 class HomeViewModel : ViewModel(), KoinComponent {
 
     val showNoConnectionAlert = MutableLiveData<Boolean>()
+    val showErrorAlert = MutableLiveData<Boolean>()
     val showLoading = MutableLiveData<Boolean>()
     val toolsObjects = MutableLiveData<List<ToolResponse>>()
+    val addedTool = MutableLiveData<ToolResponse>()
+    val deletedTool = MutableLiveData<Int>()
 
     private val connection: ConnectivityService by inject()
 
     fun getTools(context: Context) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            val toolsRequest = ToolsRequest(::onSuccess, ::onFailure)
+            val toolsRequest = ToolsRequest(::onToolsSuccess, ::onFailure)
             toolsRequest.getTools()
         } else {
             showLoading.postValue(false)
@@ -33,7 +38,8 @@ class HomeViewModel : ViewModel(), KoinComponent {
     fun addTool(context: Context, tool: Tool) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            //TODO: add na lista
+            val addRequest = AddToolRequest(::onAddSuccess, ::onFailure, tool)
+            addRequest.addTool()
         } else {
             showLoading.postValue(false)
             showNoConnectionAlert.postValue(true)
@@ -43,14 +49,15 @@ class HomeViewModel : ViewModel(), KoinComponent {
     fun removeTool(context: Context, id: Int) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            //TODO: remove da lista
+            val deleteRequest = DeleteToolRequest(::onDeleteSuccess, ::onFailure, id)
+            deleteRequest.deleteTool()
         } else {
             showLoading.postValue(false)
             showNoConnectionAlert.postValue(true)
         }
     }
 
-    private fun onSuccess(status: Int, message: String?, body: List<ToolResponse>?) {
+    private fun onToolsSuccess(status: Int, message: String?, body: List<ToolResponse>?) {
         val code = 200
         showLoading.postValue(false)
         when (status) {
@@ -70,9 +77,60 @@ class HomeViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    private fun onAddSuccess(status: Int, message: String?, body: ToolResponse?) {
+        val code = 200
+        showLoading.postValue(false)
+        when (status) {
+            200 -> {
+                Log.i("Success::", "${code}")
+                Log.i("Body::", "${body}")
+                addedTool.postValue(body)
+            }
+            404 -> {
+                Log.i("Success::", "${code}")
+                Log.e("${code}::", "$message")
+            }
+            else -> {
+                Log.i("Success::", "${code}")
+                Log.e("${code}::", "$message")
+            }
+        }
+    }
+
+    private fun onDeleteSuccess(status: Int, message: String?, id: Int?) {
+        val code = 200
+        showLoading.postValue(false)
+        when (status) {
+            200 -> {
+                Log.i("Success::", "$code")
+                findPositionById(id)?.let { position -> deletedTool.postValue(position) }
+            }
+            404 -> {
+                Log.i("Success::", "$code")
+                Log.e("${code}::", "$message")
+            }
+            else -> {
+                Log.i("Success::", "$code")
+                Log.e("${code}::", "$message")
+            }
+        }
+    }
+
     private fun onFailure() {
         showLoading.postValue(false)
+        showErrorAlert.postValue(false)
         Log.e("Error::", "failure! :(")
+    }
+
+    private fun findPositionById(id: Int?) : Int? {
+        id?.let { idValue ->
+            toolsObjects.value?.let { tools ->
+                for ((index, tool) in tools.withIndex()) {
+                    if (tool.id == idValue) return index
+                }
+            }
+        }
+        return null
     }
 
 }
