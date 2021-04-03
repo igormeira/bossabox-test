@@ -25,6 +25,11 @@ class HomeActivity : AppCompatActivity() {
         setUpViewModel()
         setUpClickListeners()
         setUpObservers()
+        setUpContent()
+    }
+
+    private fun setUpContent() {
+        viewModel.getTools(this@HomeActivity)
     }
 
     private fun setUpViewModel() {
