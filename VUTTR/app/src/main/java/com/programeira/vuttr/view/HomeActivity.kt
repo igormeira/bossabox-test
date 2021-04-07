@@ -1,6 +1,8 @@
 package com.programeira.vuttr.view
 
 import android.os.Bundle
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
@@ -15,6 +17,7 @@ import com.programeira.vuttr.view.adapters.HomeListAdapter
 import com.programeira.vuttr.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.view_error.*
 import kotlinx.android.synthetic.main.view_search_field.*
 
 class HomeActivity : AppCompatActivity() {
@@ -67,6 +70,13 @@ class HomeActivity : AppCompatActivity() {
             }
             override fun onQueryTextChange(newText: String?): Boolean {return false}
         })
+        btnErrorRetry.setOnClickListener {
+            viewModel.retry(
+                this@HomeActivity,
+                searchField.query.toString(),
+                checkboxTags.isChecked
+            )
+        }
     }
 
     private fun setUpObservers() {
@@ -78,9 +88,13 @@ class HomeActivity : AppCompatActivity() {
         })
         viewModel.showErrorAlert.observe(this@HomeActivity, Observer { show ->
             if (show) {
-                Snackbar.make(clHome, "An error occurred :(", Snackbar.LENGTH_LONG)
+                Snackbar.make(clHome, "Something went wrong :(", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
+        })
+        viewModel.showRetryError.observe(this@HomeActivity, Observer { show ->
+            if (show) showError()
+            else hideError()
         })
         viewModel.showLoading.observe(this@HomeActivity, Observer { show ->
             if (show) loading = LoadingAlert.loadingDialog(this@HomeActivity)
@@ -113,5 +127,15 @@ class HomeActivity : AppCompatActivity() {
 
     private fun callDeleteItem(id: Int) {
         viewModel.removeTool(this@HomeActivity, id)
+    }
+
+    private fun showError() {
+        rvToolsList.visibility = GONE
+        includeError.visibility = VISIBLE
+    }
+
+    private fun hideError() {
+        rvToolsList.visibility = VISIBLE
+        includeError.visibility = GONE
     }
 }

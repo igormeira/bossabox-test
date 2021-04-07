@@ -15,6 +15,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
 
     val showNoConnectionAlert = MutableLiveData<Boolean>()
     val showErrorAlert = MutableLiveData<Boolean>()
+    val showRetryError = MutableLiveData<Boolean>()
     val showLoading = MutableLiveData<Boolean>()
     val toolsObjects = MutableLiveData<List<ToolResponse>>()
     val addedTool = MutableLiveData<ToolResponse>()
@@ -25,7 +26,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
     fun getTools(context: Context) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            val toolsRequest = ToolsRequest(::onToolsSuccess, ::onFailure)
+            val toolsRequest = ToolsRequest(::onToolsSuccess, ::onFailureList)
             toolsRequest.getTools()
         } else {
             showLoading.postValue(false)
@@ -37,10 +38,10 @@ class HomeViewModel : ViewModel(), KoinComponent {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
             if (onlyTags) {
-                val tagRequest = ByTagRequest(::onToolsSuccess, ::onFailure, element)
+                val tagRequest = ByTagRequest(::onToolsSuccess, ::onFailureList, element)
                 tagRequest.getToolsByTitle()
             } else {
-                val titleRequest = ByTitleRequest(::onToolsSuccess, ::onFailure, element)
+                val titleRequest = ByTitleRequest(::onToolsSuccess, ::onFailureList, element)
                 titleRequest.getToolsByTitle()
             }
         } else {
@@ -52,7 +53,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
     fun addTool(context: Context, tool: Tool) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            val addRequest = AddToolRequest(::onAddSuccess, ::onFailure, tool)
+            val addRequest = AddToolRequest(::onAddSuccess, ::onFailureChange, tool)
             addRequest.addTool()
         } else {
             showLoading.postValue(false)
@@ -63,7 +64,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
     fun removeTool(context: Context, id: Int) {
         if (connection.isNetworkAvailable(context)) {
             showLoading.postValue(true)
-            val deleteRequest = DeleteToolRequest(::onDeleteSuccess, ::onFailure, id)
+            val deleteRequest = DeleteToolRequest(::onDeleteSuccess, ::onFailureChange, id)
             deleteRequest.deleteTool()
         } else {
             showLoading.postValue(false)
@@ -71,9 +72,15 @@ class HomeViewModel : ViewModel(), KoinComponent {
         }
     }
 
+    fun retry(context: Context, element: String = "", onlyTags: Boolean = false) {
+        if (element.isNotBlank()) getToolsBySearch(context, element, onlyTags)
+        else getTools(context)
+    }
+
     private fun onToolsSuccess(status: Int, message: String?, body: List<ToolResponse>?) {
         val code = 200
         showLoading.postValue(false)
+        showRetryError.postValue(false)
         when (status) {
             200 -> {
                 Log.i("Success::", "${code}")
@@ -130,7 +137,13 @@ class HomeViewModel : ViewModel(), KoinComponent {
         }
     }
 
-    private fun onFailure() {
+    private fun onFailureList() {
+        showLoading.postValue(false)
+        showRetryError.postValue(true)
+        Log.e("Error::", "failure! :(")
+    }
+
+    private fun onFailureChange() {
         showLoading.postValue(false)
         showErrorAlert.postValue(true)
         Log.e("Error::", "failure! :(")
@@ -146,5 +159,4 @@ class HomeViewModel : ViewModel(), KoinComponent {
         }
         return null
     }
-
 }
