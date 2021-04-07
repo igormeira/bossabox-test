@@ -15,7 +15,7 @@ class ByTagRequest(private val successCallback: (Int, message: String?, List<Too
     private val service: ApiService by inject()
 
     fun getToolsByTitle() {
-        service.getToolsByTitle(tag)
+        service.getToolsByTag(tag)
             .enqueue(object : Callback<List<ToolResponse>> {
                 override fun onResponse(call: Call<List<ToolResponse>>, response: Response<List<ToolResponse>>) {
                     successCallback.invoke(response.code(), response.message(), response.body())

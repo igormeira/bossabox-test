@@ -7,9 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.programeira.vuttr.data.datasource.ConnectivityService
 import com.programeira.vuttr.data.model.Tool
 import com.programeira.vuttr.data.model.ToolResponse
-import com.programeira.vuttr.data.repository.AddToolRequest
-import com.programeira.vuttr.data.repository.DeleteToolRequest
-import com.programeira.vuttr.data.repository.ToolsRequest
+import com.programeira.vuttr.data.repository.*
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 
@@ -29,6 +27,22 @@ class HomeViewModel : ViewModel(), KoinComponent {
             showLoading.postValue(true)
             val toolsRequest = ToolsRequest(::onToolsSuccess, ::onFailure)
             toolsRequest.getTools()
+        } else {
+            showLoading.postValue(false)
+            showNoConnectionAlert.postValue(true)
+        }
+    }
+
+    fun getToolsBySearch(context: Context, element: String, onlyTags: Boolean) {
+        if (connection.isNetworkAvailable(context)) {
+            showLoading.postValue(true)
+            if (onlyTags) {
+                val tagRequest = ByTagRequest(::onToolsSuccess, ::onFailure, element)
+                tagRequest.getToolsByTitle()
+            } else {
+                val titleRequest = ByTitleRequest(::onToolsSuccess, ::onFailure, element)
+                titleRequest.getToolsByTitle()
+            }
         } else {
             showLoading.postValue(false)
             showNoConnectionAlert.postValue(true)
@@ -118,7 +132,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
 
     private fun onFailure() {
         showLoading.postValue(false)
-        showErrorAlert.postValue(false)
+        showErrorAlert.postValue(true)
         Log.e("Error::", "failure! :(")
     }
 

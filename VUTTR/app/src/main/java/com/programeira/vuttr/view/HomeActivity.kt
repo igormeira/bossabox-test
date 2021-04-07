@@ -2,12 +2,12 @@ package com.programeira.vuttr.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
 import com.programeira.vuttr.R
 import com.programeira.vuttr.data.model.Tool
 import com.programeira.vuttr.data.model.ToolResponse
@@ -15,6 +15,7 @@ import com.programeira.vuttr.view.adapters.HomeListAdapter
 import com.programeira.vuttr.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import kotlinx.android.synthetic.main.view_search_field.*
 
 class HomeActivity : AppCompatActivity() {
 
@@ -30,7 +31,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         setUpViewModel()
-        setUpClickListeners()
+        setUpListeners()
         setUpObservers()
         setUpAdapters()
         setUpContent()
@@ -44,6 +45,7 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUpContent() {
+        checkboxTags.isChecked = false
         viewModel.getTools(this@HomeActivity)
     }
 
@@ -51,17 +53,32 @@ class HomeActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this@HomeActivity).get(HomeViewModel::class.java)
     }
 
-    private fun setUpClickListeners() {
+    private fun setUpListeners() {
         fab.setOnClickListener {
             addToolDialog = AddDialog(this@HomeActivity, ::callAddTool)
             addToolDialog.show()
         }
+        searchField.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.getToolsBySearch(
+                    this@HomeActivity, searchField.query.toString(), checkboxTags.isChecked
+                )
+                return true
+            }
+            override fun onQueryTextChange(newText: String?): Boolean {return false}
+        })
     }
 
     private fun setUpObservers() {
         viewModel.showNoConnectionAlert.observe(this@HomeActivity, Observer { show ->
             if (show) {
                 Snackbar.make(clHome, "No internet connection :(", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show()
+            }
+        })
+        viewModel.showErrorAlert.observe(this@HomeActivity, Observer { show ->
+            if (show) {
+                Snackbar.make(clHome, "An error occurred :(", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
             }
         })
