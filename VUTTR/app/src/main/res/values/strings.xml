@@ -1,5 +1,5 @@
 <resources>
-    <!--  App  -->
+    <!--  App (Very Useful Tools to Remember) -->
     <string name="app_name">VUTTR</string>
     <!--  Error  -->
     <string name="error_default_message">Oops...\nSomething happened, but we are already working on it.</string>
