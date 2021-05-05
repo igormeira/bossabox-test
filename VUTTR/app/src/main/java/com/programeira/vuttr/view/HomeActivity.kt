@@ -15,6 +15,7 @@ import com.programeira.vuttr.data.model.Tool
 import com.programeira.vuttr.data.model.ToolResponse
 import com.programeira.vuttr.view.adapters.HomeListAdapter
 import com.programeira.vuttr.view.dialogs.AddDialog
+import com.programeira.vuttr.view.dialogs.LoadingAlert
 import com.programeira.vuttr.view.dialogs.RemoveDialog
 import com.programeira.vuttr.viewmodel.HomeViewModel
 import kotlinx.android.synthetic.main.activity_main.*

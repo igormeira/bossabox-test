@@ -1,4 +1,4 @@
-package com.programeira.vuttr.view
+package com.programeira.vuttr.view.dialogs
 
 import android.content.Context
 import android.graphics.Color
