@@ -29,8 +29,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
             val toolsRequest = ToolsRequest(::onToolsSuccess, ::onFailureList)
             toolsRequest.getTools()
         } else {
-            showLoading.postValue(false)
-            showNoConnectionAlert.postValue(true)
+            showConnectionAlert()
         }
     }
 
@@ -45,8 +44,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
                 titleRequest.getToolsByTitle()
             }
         } else {
-            showLoading.postValue(false)
-            showNoConnectionAlert.postValue(true)
+            showConnectionAlert()
         }
     }
 
@@ -56,8 +54,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
             val addRequest = AddToolRequest(::onAddSuccess, ::onFailureChange, tool)
             addRequest.addTool()
         } else {
-            showLoading.postValue(false)
-            showNoConnectionAlert.postValue(true)
+            showConnectionAlert()
         }
     }
 
@@ -67,9 +64,13 @@ class HomeViewModel : ViewModel(), KoinComponent {
             val deleteRequest = DeleteToolRequest(::onDeleteSuccess, ::onFailureChange, id)
             deleteRequest.deleteTool()
         } else {
-            showLoading.postValue(false)
-            showNoConnectionAlert.postValue(true)
+            showConnectionAlert()
         }
+    }
+
+    private fun showConnectionAlert() {
+        showLoading.postValue(false)
+        showNoConnectionAlert.postValue(true)
     }
 
     fun retry(context: Context, element: String = "", onlyTags: Boolean = false) {
@@ -77,62 +78,42 @@ class HomeViewModel : ViewModel(), KoinComponent {
         else getTools(context)
     }
 
-    private fun onToolsSuccess(status: Int, message: String?, body: List<ToolResponse>?) {
-        val code = 200
+    private fun onToolsSuccess(code: Int, message: String?, body: List<ToolResponse>?) {
         showLoading.postValue(false)
         showRetryError.postValue(false)
-        when (status) {
+        when (code) {
             200 -> {
-                Log.i("Success::", "${code}")
-                Log.i("Body::", "${body}")
+                logSuccessBody(code, body)
                 toolsObjects.postValue(body)
             }
-            404 -> {
-                Log.i("Success::", "${code}")
-                Log.e("${code}::", "$message")
-            }
             else -> {
-                Log.i("Success::", "${code}")
-                Log.e("${code}::", "$message")
+                logSuccessMessage(code, message)
             }
         }
     }
 
-    private fun onAddSuccess(status: Int, message: String?, body: ToolResponse?) {
-        val code = 200
+    private fun onAddSuccess(code: Int, message: String?, body: ToolResponse?) {
         showLoading.postValue(false)
-        when (status) {
+        when (code) {
             200 -> {
-                Log.i("Success::", "${code}")
-                Log.i("Body::", "${body}")
+                logSuccessBody(code, body)
                 addedTool.postValue(body)
             }
-            404 -> {
-                Log.i("Success::", "${code}")
-                Log.e("${code}::", "$message")
-            }
             else -> {
-                Log.i("Success::", "${code}")
-                Log.e("${code}::", "$message")
+                logSuccessMessage(code, message)
             }
         }
     }
 
-    private fun onDeleteSuccess(status: Int, message: String?, id: Int?) {
-        val code = 200
+    private fun onDeleteSuccess(code: Int, message: String?, id: Int?) {
         showLoading.postValue(false)
-        when (status) {
+        when (code) {
             200 -> {
                 Log.i("Success::", "$code")
                 findPositionById(id)?.let { position -> deletedTool.postValue(position) }
             }
-            404 -> {
-                Log.i("Success::", "$code")
-                Log.e("${code}::", "$message")
-            }
             else -> {
-                Log.i("Success::", "$code")
-                Log.e("${code}::", "$message")
+                logSuccessMessage(code, message)
             }
         }
     }
@@ -158,5 +139,15 @@ class HomeViewModel : ViewModel(), KoinComponent {
             }
         }
         return null
+    }
+
+    private fun logSuccessMessage(code: Int, message: String?) {
+        Log.i("Success::", "${code}")
+        Log.e("${code}::", "$message")
+    }
+
+    private fun logSuccessBody(code: Int, body: Any?) {
+        Log.i("Success::", "${code}")
+        Log.i("Body::", "${body}")
     }
 }

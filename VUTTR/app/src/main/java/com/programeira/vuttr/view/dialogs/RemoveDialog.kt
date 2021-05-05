@@ -1,4 +1,4 @@
-package com.programeira.vuttr.view
+package com.programeira.vuttr.view.dialogs
 
 import android.app.Activity
 import android.app.Dialog

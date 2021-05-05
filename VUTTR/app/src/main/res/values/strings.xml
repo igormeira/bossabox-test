@@ -4,4 +4,20 @@
     <!--  Error  -->
     <string name="error_default_message">Oops...\nSomething happened, but we are already working on it.</string>
     <string name="error_retry">Try again</string>
+    <!-- Descriptions -->
+    <string name="add_description">Add new tool</string>
+    <!--  Buttons  -->
+    <string name="add_button">Add tool</string>
+    <string name="remove_button">Yes, remove</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="text_checkbox">only tags</string>
+    <!--  Fields  -->
+    <string name="tags_hint">Tags</string>
+    <string name="tool_description_hint">Tool description</string>
+    <string name="tool_link_hint">Tool link</string>
+    <string name="tool_name_hint">Tool name</string>
+    <!--  Titles  -->
+    <string name="add_new_tool_title">Add new tool</string>
+    <string name="remove_tool_title">Remove tool</string>
+    <string name="remove_tool_text">Are you sure you want to remove [tool tile]?</string>
 </resources>

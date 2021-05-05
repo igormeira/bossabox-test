@@ -1,25 +1,22 @@
 <resources>
-    <color name="background_gradient_start">#000000</color>
-    <color name="background_gradient_end">#DDDDDD</color>
-    <color name="fastlane_background">#0096a6</color>
-    <color name="search_opaque">#ffaa3f</color>
-    <color name="selected_background">#ffaa3f</color>
-    <color name="default_background">#3d3d3d</color>
-
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
     <color name="whiteLight">#F5F5F5</color>
     <color name="whiteDark">#E2E2E3</color>
     <color name="gray">#C4C4C4</color>
     <color name="grayDark">#646E78</color>
-    <color name="green">#6DC248</color>
-    <color name="greenBlue">#51C9B9</color>
-    <color name="blueLightest">#0ECFDB</color>
-    <color name="blueLight">#3394D1</color>
-    <color name="blueDark">#003D74</color>
-    <color name="blueDarkest">#003D77</color>
-    <color name="yellow">#EFB254</color>
-    <color name="orange">#ED684E</color>
-    <color name="red">#FF0000</color>
+    <!--  Blue  -->
+    <color name="blueLightest">#B9C6FA</color>
+    <color name="blueLight">#9AAEF7</color>
+    <color name="blue">#365DF0</color>
+    <color name="blueDark">#2F55CC</color>
+    <color name="blueDarkest">#244AA8</color>
+    <!--  Yellow  -->
+    <color name="yellowDark">#D89C3A</color>
+    <color name="yellowDarkest">#996C2B</color>
+    <!--  Text  -->
     <color name="textWhite">#FFFFFF</color>
+    <color name="textHint">#C7C4CD</color>
+    <color name="textLight">#8F8A9B</color>
+    <color name="textDark">#170C3A</color>
 </resources>

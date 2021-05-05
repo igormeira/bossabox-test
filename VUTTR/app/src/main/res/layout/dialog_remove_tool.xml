@@ -12,9 +12,9 @@
         style="@style/textStyleH3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Remove tool"
+        android:text="@string/remove_tool_title"
         android:textStyle="bold"
-        android:textColor="@color/grayDark"
+        android:textColor="@color/textDark"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
 
@@ -33,7 +33,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Are you sure you want to remove [tool tile]?"
+        android:textColor="@color/textLight"
+        android:text="@string/remove_tool_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDialogRemoveTitle" />
@@ -44,9 +45,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Yes, remove"
+        android:backgroundTint="@color/blueDarkest"
+        android:text="@string/remove_button"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDialogRemoveDescription" />
 
@@ -57,7 +59,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
-        android:text="Cancel"
+        android:backgroundTint="@color/blueLightest"
+        android:text="@string/cancel_button"
         android:textAllCaps="false"
         android:textColor="@color/black"
         app:layout_constraintEnd_toStartOf="@+id/btnDialogRemovePositive"
