@@ -84,7 +84,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
         when (code) {
             200 -> {
                 logSuccessBody(code, body)
-                toolsObjects.postValue(body)
+                body?.let { value ->  toolsObjects.postValue(value)}
             }
             else -> {
                 logSuccessMessage(code, message)
@@ -97,7 +97,7 @@ class HomeViewModel : ViewModel(), KoinComponent {
         when (code) {
             200 -> {
                 logSuccessBody(code, body)
-                addedTool.postValue(body)
+                body?.let { value ->  addedTool.postValue(value)}
             }
             else -> {
                 logSuccessMessage(code, message)
